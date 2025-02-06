@@ -1,4 +1,7 @@
 package com.janani.service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,23 +18,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.logging.Logger;
 
 @Service
 public class GeminiService implements IGeminiService {
 
     private final String apiKey;
     private final String baseUrl;
-    private final Logger logger;
-    private static final RestTemplate restTemplate = new RestTemplate();
+    private final Logger logger=LoggerFactory.getLogger(GeminiService.class);
+    @Autowired
+    private  RestTemplate restTemplate;
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public GeminiService(@Value("${GeminiApi.ApiKey}") String apiKey,
-                         @Value("${GeminiApi.BaseUrl}") String baseUrl,
-                         Logger logger) {
+                         @Value("${GeminiApi.BaseUrl}") String baseUrl) {
         this.apiKey = apiKey;
         this.baseUrl = baseUrl;
-        this.logger = logger;
     }
 
     @Override
@@ -97,7 +98,7 @@ public class GeminiService implements IGeminiService {
                     throw new IllegalArgumentException("No candidates found in the response.");
                 }
             } catch (Exception e) {
-                logger.severe("Error calling Gemini API: " + e.getMessage());
+                logger.error("Error calling Gemini API:{} " , e.getMessage());
                 throw new IllegalStateException("Error calling Gemini API: " + e.getMessage(), e);
             }
         });

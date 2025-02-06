@@ -12,12 +12,8 @@ import com.janani.model.UserViewModel;
 import com.janani.service.UserService;
 import com.janani.util.Utils;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import io.jsonwebtoken.*;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
@@ -31,12 +27,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private AuthenticationProvider authenticationProvider;
 
     @Value("${jwt.key}")
     private String jwtKey;
